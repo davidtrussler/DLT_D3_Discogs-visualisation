@@ -1,0 +1,21 @@
+body {
+	margin: 15px;
+}
+
+svg {
+  background-color: beige;
+  margin: 0 0 15px 0;
+}
+
+.bar {
+  fill: teal;
+}
+
+.label {
+  font-family: sans-serif;
+  font-size: 11px;
+}
+
+.barchart .label {
+  fill: white;
+}

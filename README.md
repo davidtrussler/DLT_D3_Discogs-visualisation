@@ -1,6 +1,6 @@
-# DLT_D3_Discogs-visualisation
+# D3 Discogs Visualisation
 
-New project based on an earlier visualisation of Discogs data and stuff learned from following Scott Murray’s book, Interactive Data Visualisation for the Web.
+New project based on an [earlier visualisation of Discogs data](https://github.com/davidtrussler/DLT_D3_Discogs) and stuff learned from following Scott Murray’s book, [Interactive Data Visualisation for the Web](https://github.com/davidtrussler/DLT_D3_Interactive-DV).
 
 The first goal is to create a bar chart that shows the categories in my record collection enumerated against each other.
 
