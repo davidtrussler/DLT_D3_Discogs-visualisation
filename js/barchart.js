@@ -1,6 +1,6 @@
 var Barchart = function() {
-  this.width = 500;
-  this.height = 300;
+  this.width = 600;
+  this.height = 400;
   this.barPadding = 1;
 };
 
@@ -25,19 +25,32 @@ Barchart.prototype.drawCategories = function(categories) {
 		.enter()
 		.append('text');
 
+	var maxCount = d3.max(categories, function(d) {
+		return d.count;
+	});
+
+	var xScale = d3.scaleBand()
+		.domain(d3.range(categories.length))
+		.range([0, this.width])
+		.paddingInner(0.05);
+
+	var yScale = d3.scaleLinear()
+		.domain([0, maxCount])
+		.range([0, this.height]);
+
 	rects
 		.attr('class', 'bar')
 		.attr('x', function(d, i) {
-			return i * (_this.width / categories.length);
+			return xScale(i);
 		})
 		.attr('y', function(d) {
-			return _this.height - d.count;
+			return _this.height - yScale(d.count);
 		})
 		.attr('width', function(d, i) {
-			return _this.width / categories.length - _this.barPadding;
+			return xScale.bandwidth();
 		})
 		.attr('height', function(d) {
-			return d.count;
+			return yScale(d.count);
 		});
 
 	// labels
