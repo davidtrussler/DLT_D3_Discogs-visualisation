@@ -53,16 +53,21 @@ Barchart.prototype.drawCategories = function(categories) {
 			return yScale(d.count);
 		});
 
-	// labels
-	// 	.text(function(d) {
-	// 		return d;
-	// 	})
-	// 	.attr('class', 'label')
-	// 	.attr('text-anchor', 'middle')
-	// 	.attr('x', function(d, i) {
-	// 		return i * (_this.width / categories.length) + (_this.width / categories.length - _this.barPadding) / 2;
-	// 	})
-	// 	.attr('y', function(d) {
-	// 		return _this.height - d + 12;
-	// 	});
+	labels
+		.text(function(d) {
+			return d.name;
+		})
+		.attr('class', 'label')
+		.attr('text-anchor', '')
+		.attr('x', function(d, i) {
+			// return i * (_this.width / categories.length) + (_this.width / categories.length - _this.barPadding) / 2;
+			return xScale(i) + (xScale.bandwidth() / 2); //  * (_this.width / categories.length) + (_this.width / categories.length - _this.barPadding) / 2;
+		})
+		.attr('y', function(d) {
+			// return _this.height - d + 12;
+			return _this.height - 12;
+		})
+		.attr('transform', function(d, i) {
+			return 'rotate(270, ' + (xScale(i) + (xScale.bandwidth() / 1.5)) + ', ' + (_this.height - 12) + ')';
+		});
 }
