@@ -2,11 +2,10 @@ var Barchart = function() {
   this.width = 600;
   this.height = 400;
   this.barPadding = 1;
+  this.labelPadding = 5;
 };
 
 Barchart.prototype.drawCategories = function(categories) {
-	console.log('categories: ', categories);
-
 	var _this = this;
 
 	var svg = d3.select('body')
@@ -38,6 +37,9 @@ Barchart.prototype.drawCategories = function(categories) {
 		.domain([0, maxCount])
 		.range([0, this.height]);
 
+	// An array to hold rect data to be used to relatively position the label to the rect below
+	var rectData = [];
+
 	rects
 		.attr('class', 'bar')
 		.attr('x', function(d, i) {
@@ -51,6 +53,9 @@ Barchart.prototype.drawCategories = function(categories) {
 		})
 		.attr('height', function(d) {
 			return yScale(d.count);
+		})
+		.each(function(d, i) {
+			rectData[i] = this.getBBox(); // bbox;
 		});
 
 	labels
@@ -59,15 +64,21 @@ Barchart.prototype.drawCategories = function(categories) {
 		})
 		.attr('class', 'label')
 		.attr('text-anchor', '')
-		.attr('x', function(d, i) {
-			// return i * (_this.width / categories.length) + (_this.width / categories.length - _this.barPadding) / 2;
-			return xScale(i) + (xScale.bandwidth() / 2); //  * (_this.width / categories.length) + (_this.width / categories.length - _this.barPadding) / 2;
-		})
 		.attr('y', function(d) {
-			// return _this.height - d + 12;
 			return _this.height - 12;
 		})
 		.attr('transform', function(d, i) {
 			return 'rotate(270, ' + (xScale(i) + (xScale.bandwidth() / 1.5)) + ', ' + (_this.height - 12) + ')';
+		})
+		.each(function(d, i) {
+			var bbox_label = this.getBBox();
+			var bbox_rect = rectData[i];
+
+			if ((bbox_label.width + (_this.labelPadding * 2)) > bbox_rect.height) {
+				this.setAttribute('class', this.getAttribute('class') + ' label--exterior');
+				this.setAttribute('x', xScale(i) + _this.labelPadding + bbox_rect.height);
+			} else {
+				this.setAttribute('x', xScale(i) + _this.labelPadding);
+			}
 		});
 }

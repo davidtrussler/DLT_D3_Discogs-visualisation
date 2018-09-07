@@ -4,15 +4,22 @@
 **/
 
 var Data = function() {
-  this.base_url = 'https://api.discogs.com/users/davidTrussler/collection';
+  // Local, for development
+  this.base_url = 'src/response.json';
+  // Production, uses live data
+  // this.base_url = 'https://api.discogs.com/users/davidTrussler/collection';
   this.token = 'whKeouEYlyPpfzmYshRvfbFYlwqBtflZYLziIWyl';
 };
 
 Data.prototype.getCategories = function() {
-  console.log('getCategories!');
+  // console.log('getCategories!');
 
   var _this = this;
-  var url = this.base_url + '/folders?token=' + this.token;
+
+  // Local, for development
+  var url = this.base_url;
+  // Production, uses live data
+  // var url = this.base_url + '/folders?token=' + this.token;
 
   $.get(url, function(response) {
     _this._parseResponse(response);
