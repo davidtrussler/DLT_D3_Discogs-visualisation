@@ -5,7 +5,7 @@ var Barchart = function() {
 };
 
 Barchart.prototype.drawCategories = function(categories) {
-	console.log('categories: ', categories);
+	// console.log('categories: ', categories);
 
 	var _this = this;
 
@@ -60,14 +60,16 @@ Barchart.prototype.drawCategories = function(categories) {
 		.attr('class', 'label')
 		.attr('text-anchor', '')
 		.attr('x', function(d, i) {
-			// return i * (_this.width / categories.length) + (_this.width / categories.length - _this.barPadding) / 2;
-			return xScale(i) + (xScale.bandwidth() / 2); //  * (_this.width / categories.length) + (_this.width / categories.length - _this.barPadding) / 2;
+			return xScale(i) + (xScale.bandwidth() / 2);
 		})
 		.attr('y', function(d) {
-			// return _this.height - d + 12;
 			return _this.height - 12;
 		})
 		.attr('transform', function(d, i) {
 			return 'rotate(270, ' + (xScale(i) + (xScale.bandwidth() / 1.5)) + ', ' + (_this.height - 12) + ')';
+		})
+		.each(function() {
+			var bbox = this.getBBox();
+			console.log('bbox: ', bbox);
 		});
 }
