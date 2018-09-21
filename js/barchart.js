@@ -63,9 +63,6 @@ Barchart.prototype.drawCategories = function(categories) {
 		})
 		.attr('class', 'label')
 		.attr('text-anchor', '')
-		.attr('x', function(d, i) {
-			return xScale(i) + (xScale.bandwidth() / 2);
-		})
 		.attr('y', function(d) {
 			return _this.height - 12;
 		})
@@ -73,8 +70,14 @@ Barchart.prototype.drawCategories = function(categories) {
 			return 'rotate(270, ' + (xScale(i) + (xScale.bandwidth() / 1.5)) + ', ' + (_this.height - 12) + ')';
 		})
 		.each(function(d, i) {
-			var bbox = this.getBBox();
-			console.log('label bbox: ', bbox);
-			console.log('rect bbox: ', rectData[i]);
+			var bbox_label = this.getBBox();
+			var bbox_rect = rectData[i];
+
+			if (bbox_label.width > bbox_rect.height) {
+				this.setAttribute('class', this.getAttribute('class') + ' label--exterior');
+				this.setAttribute('x', xScale(i) + (xScale.bandwidth() / 2) + bbox_rect.height);
+			} else {
+				this.setAttribute('x', xScale(i) + (xScale.bandwidth() / 2));
+			}
 		});
 }
