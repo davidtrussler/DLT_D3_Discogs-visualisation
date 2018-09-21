@@ -5,8 +5,6 @@ var Barchart = function() {
 };
 
 Barchart.prototype.drawCategories = function(categories) {
-	// console.log('categories: ', categories);
-
 	var _this = this;
 
 	var svg = d3.select('body')
@@ -38,6 +36,9 @@ Barchart.prototype.drawCategories = function(categories) {
 		.domain([0, maxCount])
 		.range([0, this.height]);
 
+	// An array to hold rect data to be used to relatively position the label to the rect below
+	var rectData = [];
+
 	rects
 		.attr('class', 'bar')
 		.attr('x', function(d, i) {
@@ -51,6 +52,9 @@ Barchart.prototype.drawCategories = function(categories) {
 		})
 		.attr('height', function(d) {
 			return yScale(d.count);
+		})
+		.each(function(d, i) {
+			rectData[i] = this.getBBox(); // bbox;
 		});
 
 	labels
@@ -68,8 +72,9 @@ Barchart.prototype.drawCategories = function(categories) {
 		.attr('transform', function(d, i) {
 			return 'rotate(270, ' + (xScale(i) + (xScale.bandwidth() / 1.5)) + ', ' + (_this.height - 12) + ')';
 		})
-		.each(function() {
+		.each(function(d, i) {
 			var bbox = this.getBBox();
-			console.log('bbox: ', bbox);
+			console.log('label bbox: ', bbox);
+			console.log('rect bbox: ', rectData[i]);
 		});
 }
