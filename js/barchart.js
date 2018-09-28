@@ -2,6 +2,7 @@ var Barchart = function() {
   this.width = 600;
   this.height = 400;
   this.barPadding = 1;
+  this.labelPadding = 5;
 };
 
 Barchart.prototype.drawCategories = function(categories) {
@@ -73,11 +74,11 @@ Barchart.prototype.drawCategories = function(categories) {
 			var bbox_label = this.getBBox();
 			var bbox_rect = rectData[i];
 
-			if (bbox_label.width > bbox_rect.height) {
+			if ((bbox_label.width + (_this.labelPadding * 2)) > bbox_rect.height) {
 				this.setAttribute('class', this.getAttribute('class') + ' label--exterior');
-				this.setAttribute('x', xScale(i) + (xScale.bandwidth() / 2) + bbox_rect.height);
+				this.setAttribute('x', xScale(i) + _this.labelPadding + bbox_rect.height);
 			} else {
-				this.setAttribute('x', xScale(i) + (xScale.bandwidth() / 2));
+				this.setAttribute('x', xScale(i) + _this.labelPadding);
 			}
 		});
 }
