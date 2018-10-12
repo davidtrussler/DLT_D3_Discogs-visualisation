@@ -9,10 +9,13 @@ var Data = function() {
   // Production, uses live data
   // this.base_url = 'https://api.discogs.com/users/davidTrussler/collection';
   this.token = 'whKeouEYlyPpfzmYshRvfbFYlwqBtflZYLziIWyl';
+  this.response = null;
+  this.delay = 10;
 };
 
 Data.prototype.getCategories = function() {
-  // console.log('getCategories!');
+  console.log('getCategories!');
+  console.log(Barchart);
 
   var _this = this;
 
@@ -22,6 +25,8 @@ Data.prototype.getCategories = function() {
   // var url = this.base_url + '/folders?token=' + this.token;
 
   $.get(url, function(response) {
+    // Barchart.response = response;
+    // _this._parseResponse(Barchart.response);
     _this._parseResponse(response);
 
     // error handling etc.
@@ -29,17 +34,34 @@ Data.prototype.getCategories = function() {
 }
 
 Data.prototype._parseResponse = function(response) {
-  // remove categories: all, uncategorised
-  var categories = [];
-  var barchart = new Barchart();
-  // var piechart = new Piechart();
+  var _this = this;
+
+  this.barchart = new Barchart();
 
   response.folders.forEach(function(folder) {
     if (folder.name !== 'All' && folder.name !== 'Uncategorized') {
-      categories.push(folder);
+      _this.barchart.categories.push(folder);
     }
   });
 
-  barchart.drawCategories(categories);
-  // piechart.draw(categories);
+  this.barchart.drawCategories();
+
+  // Draw chart on resize
+  $(window).on('resize', _this.debounce(_this.barchart.drawCategories, _this.delay, _this.barchart));
 }
+
+Data.prototype.debounce = function(func, wait, self) {
+  var timeout;
+
+  return function() {
+    var context = self,
+      args = arguments,
+      later = function() {
+        timeout = null;
+        func.apply(context, args);
+      };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+

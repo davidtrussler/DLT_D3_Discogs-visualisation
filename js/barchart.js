@@ -2,17 +2,24 @@ var Barchart = function() {
   this.aspectRatio = 3/6;
   this.barPadding = 1;
   this.labelPadding = 10;
+  this.categories = [];
 };
 
-Barchart.prototype.drawCategories = function(categories) {
+Barchart.prototype.drawCategories = function() {
 	var _this = this;
+	var categories = this.categories;
+	var $svgContainer = $('#svg-container');
+
+	// If there is already an SVG, delete it
+	if ($svgContainer.children('svg').length > 0) {
+		$svgContainer.empty();
+	}
 
 	// Set the size of the SVG dynamically
-	var $svgContainer = $('#svg-container');
 	this.width = $svgContainer.width();
 	this.height = this.width * this.aspectRatio;
 
-	var svg = d3.select('body')
+	var svg = d3.select('#svg-container')
 		.append('svg')
 		.attr('class', 'barchart')
 		.attr('width', this.width)
