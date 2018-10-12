@@ -1,12 +1,16 @@
 var Barchart = function() {
-  this.width = 600;
-  this.height = 400;
+  this.aspectRatio = 3/6;
   this.barPadding = 1;
-  this.labelPadding = 5;
+  this.labelPadding = 10;
 };
 
 Barchart.prototype.drawCategories = function(categories) {
 	var _this = this;
+
+	// Set the size of the SVG dynamically
+	var $svgContainer = $('#svg-container');
+	this.width = $svgContainer.width();
+	this.height = this.width * this.aspectRatio;
 
 	var svg = d3.select('body')
 		.append('svg')
